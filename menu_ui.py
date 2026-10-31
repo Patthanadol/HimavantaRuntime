@@ -13,7 +13,6 @@ gui.update()
 gui.resizable(False,False)
 
 BASE_DIR = Path(__file__).parent
-tut = BASE_DIR /'tutorial1.png'
 
 def playGame(): #กดเริ่ม
     mainFrame.pack_forget()
@@ -21,18 +20,13 @@ def playGame(): #กดเริ่ม
 
 def howToPlay(): #วิธีเล่น
     mainFrame.pack_forget()
-    tutorialFrame1.pack(fill="both", expand=True)
-
-def htp2(): 
-    tutorialFrame1.pack_forget()
-    tutorialFrame2.pack(fill="both", expand=True)
+    tutorialFrame.pack(fill="both", expand=True)
 
 def close(): #ปิดเกม
     gui.destroy()
 
 def menu(): #กลับหน้าแรก
-    tutorialFrame1.pack_forget()
-    tutorialFrame2.pack_forget()
+    tutorialFrame.pack_forget()
     mainFrame.pack(fill="both", expand=True)
 
 mainFrame=tk.Frame(gui, bg="#ffffff")
@@ -43,23 +37,17 @@ logo=ttk.Label(mainFrame, image=photo, compound = tk.TOP,).pack(expand=True)
 tk.Label(mainFrame, text="เมื่อวัฏสงสารติด loop ... มีเพียงท่านที่สามารถแก้ไข",font=(("SOV_yamaka"), 50)).pack()
 tk.Label(mainFrame, text="────────── ❖ ──────────",font=(("SOV_yamaka"), 50)).pack()
 tk.Button(mainFrame, text="เริ่มเกม", font=(("SOV_yamaka"),50), command=playGame).pack(expand=True)
-tk.Button(mainFrame, text="วิธีเล่น", font=(("SOV_yamaka"),50), command=playGame).pack(expand=True)
+tk.Button(mainFrame, text="วิธีเล่น", font=(("SOV_yamaka"),50), command=howToPlay).pack(expand=True)
 tk.Button(mainFrame, text="ออกเกม", font=(("SOV_yamaka"),50), command=close).pack(expand=True)
 
-#tutorial page 1
-tutorialFrame1=tk.Frame(gui, bg="#2f2e0a")
-
-tk.Label(tutorialFrame1, text="ภารกิจของเจ้า",font=(("SOV_yamaka"), 70), bg="#2f2e0a", fg="white").pack()
-attack=tk.Label(tutorialFrame1, text="Attack", font=(("MN KHUNYING"), 50), bg="#f8f8ef", fg="white").place(x=50, y=100)
-attack=tk.Label(tutorialFrame1, text="Ultimate", font=(("MN KHUNYING"), 50), bg="#f8f8ef", fg="white").place(x=1000, y=100)
-attack=tk.Label(tutorialFrame1, text="Heal", font=(("MN KHUNYING"), 50), bg="#f8f8ef", fg="white").place(x=1500, y=100)
 
 
-tk.Button(tutorialFrame1, text="next", font=(("SOV_yamaka"),20), command=htp2).pack()
-tk.Button(tutorialFrame1, text="กลับสู่เมนู", font=(("SOV_yamaka"),20), command=menu).pack()
+tutorialFrame = tk.Frame(gui, width=1920, height=1080)
 
+tut_img = tk.PhotoImage(file=BASE_DIR / "tutorial.png")
+tk.Label(tutorialFrame, image=tut_img).place(x=0, y=0, width=1920, height=1080)
 
-tutorialFrame2=tk.Frame(gui, bg="#d6d034")
+tk.Button(tutorialFrame, text="กลับสู่เมนู", font=(("SOV_yamaka"), 30), command=menu).place(x=1650, y=980, width=220, height=60)
 
 
 gui.mainloop()

@@ -2,6 +2,7 @@ import tkinter as tk
 from pathlib import Path
 
 import battle_ui
+import player
 
 BASE_DIR = Path(__file__).parent
 
@@ -23,24 +24,35 @@ def start(gui):
 def next_page(gui):
     global nameInput
     nameInput = nameEntry.get()
-    if len(nameInput) > 10:
-        alert=tk.Tk()
-        alert.title("ERROR")
-        alert.geometry("700x250+610+410")
-        alert.resizable(False,False)
-        tk.Label(alert, text="นามของท่านมิอาจเกิน 10 อักขระ!!", font=(("MN KHUNYING"), 40)).pack(pady=30)
-        tk.Button(alert, text="ลองอีกสักครา", font=(("MN KHUNYING"), 30), command=alert.destroy).pack(anchor="s")
-    elif len(nameInput) == 0:
-        alert=tk.Tk()
-        alert.title("ERROR")
-        alert.geometry("700x250+610+410")
-        alert.resizable(False,False)
-        tk.Label(alert, text="ท่านมิได้รับอนุญาตให้นิรนาม", font=(("MN KHUNYING"), 40)).pack(pady=30)
-        tk.Button(alert, text="ลองอีกสักครา", font=(("MN KHUNYING"), 30), command=alert.destroy).pack(anchor="s")
-    else:
-        namePage.pack_forget()
-        visual(gui)
 
+    # try-except อันที่ 1: เช็กว่าลืมกรอกชื่อหรือไม่
+    try:
+        if len(nameInput) == 0:
+            raise ValueError("ท่านมิได้รับอนุญาตให้นิรนาม")
+    except ValueError as err_msg:
+        alert = tk.Toplevel(gui)
+        alert.title("ERROR")
+        alert.geometry("700x250+610+410")
+        alert.resizable(False, False)
+        tk.Label(alert, text=str(err_msg), font=(("MN KHUNYING"), 40)).pack(pady=30)
+        tk.Button(alert, text="ลองอีกสักครา", font=(("MN KHUNYING"), 30), command=alert.destroy).pack(anchor="s")
+        return
+
+    try:
+        if len(nameInput) > 10:
+            raise ValueError("นามของท่านมิอาจเกิน 10 อักขระ!!")
+    except ValueError as err_msg:
+        alert = tk.Toplevel(gui)
+        alert.title("ERROR")
+        alert.geometry("700x250+610+410")
+        alert.resizable(False, False)
+        tk.Label(alert, text=str(err_msg), font=(("MN KHUNYING"), 40)).pack(pady=30)
+        tk.Button(alert, text="ลองอีกสักครา", font=(("MN KHUNYING"), 30), command=alert.destroy).pack(anchor="s")
+        return
+
+    player.name = nameInput
+    namePage.pack_forget()
+    visual(gui)
 
 
 def vn1():
@@ -101,7 +113,7 @@ def visual(gui):
 
     bg_label = tk.Label(vnFrame, image=bg)
 
-    bg_label.image = bg #พื้นหลังหน้า vn
+    bg_label.image = bg #เอาไว้เปลี่ยนพื้นหลังหน้า vn
     bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
 
@@ -143,7 +155,7 @@ def visual(gui):
     page7 = tk.LabelFrame(vnFrame, text=f" 🔱 มหาฤๅษี 🔱", font=(("SOV_yamaka"), 40), padx=30, pady=20, bd=0)
     tk.Label(page7, text=f"ข้าได้ประสาทพลังโจมตี มหาเวท และฟื้นฟูไว้ในกายเจ้าแล้ว... จงเชื่อมั่นในพลังแห่งดวงชะตาของเจ้า",
                     font=(("MN KHUNYING"), 30),justify="left",anchor="w").pack(fill="x")
-    tk.Button(page7,text="ออกเดินทาง",font=(("SOV_yamaka"),20),command=lambda:vn7(gui),highlightthickness=0,bd=0).place(relx=0.98, rely=0.68, anchor="center")
+    tk.Button(page7,text="ออกเดินทาง",font=(("SOV_yamaka"),20),command=lambda:vn7(gui),highlightthickness=0,bd=0).place(relx=0.97, rely=0.68, anchor="center")
 
 
 
